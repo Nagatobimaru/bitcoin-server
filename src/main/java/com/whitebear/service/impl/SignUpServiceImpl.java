@@ -2,6 +2,7 @@ package com.whitebear.service.impl;
 
 import com.whitebear.common.mapper.UserMapper;
 import com.whitebear.model.User;
+import com.whitebear.repository.UserRepository;
 import com.whitebear.service.SignUpService;
 import com.whitebear.web.request.SignUpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +21,13 @@ public class SignUpServiceImpl implements SignUpService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Override
-    public boolean SignUp(SignUpRequest request) {
+    public void SignUp(SignUpRequest request) {
         User user = userMapper.SignUpRequestToUser(request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        System.out.println(user);
-        return false;
+        userRepository.save(user);
     }
 }
